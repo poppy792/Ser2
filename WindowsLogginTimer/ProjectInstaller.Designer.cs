@@ -39,7 +39,6 @@
             // 
             // serviceInstaller1
             // 
-            this.serviceInstaller1.StartType = System.ServiceProcess.ServiceStartMode.Automatic;
             this.serviceInstaller1.ServiceName = "Service1";
             // 
             // ProjectInstaller
