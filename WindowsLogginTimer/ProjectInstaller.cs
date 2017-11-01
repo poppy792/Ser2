@@ -21,6 +21,7 @@ namespace WindowsLogginTimer
             using (System.ServiceProcess.ServiceController serviceController = new System.ServiceProcess.ServiceController(serviceInstaller1.ServiceName))
             {
                 serviceController.Start();
+
             }
         }
     }
