@@ -30,6 +30,7 @@
         {
             this.serviceProcessInstaller1 = new System.ServiceProcess.ServiceProcessInstaller();
             this.serviceInstaller1 = new System.ServiceProcess.ServiceInstaller();
+            this.serviceProcessInstaller1.Account = System.ServiceProcess.ServiceAccount.LocalSystem;
             // 
             // serviceProcessInstaller1
             // 
