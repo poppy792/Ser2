@@ -36,7 +36,7 @@
 
             this.serviceInstaller1.ServiceName = "ServiceLogTest";
 
-            this.serviceInstaller1.StartType = System.ServiceProcess.ServiceStartMode.Automatic;
+           // this.serviceInstaller1.StartType = System.ServiceProcess.ServiceStartMode.Automatic;
 
             this.serviceProcessInstaller1.AfterInstall += new System.Configuration.Install.InstallEventHandler(this.serviceProcessInstaller1_AfterInstall);
           

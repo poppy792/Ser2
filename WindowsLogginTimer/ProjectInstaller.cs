@@ -18,11 +18,11 @@ namespace WindowsLogginTimer
 
         private void serviceProcessInstaller1_AfterInstall(object sender, InstallEventArgs e)
         {
-            using (System.ServiceProcess.ServiceController serviceController = new System.ServiceProcess.ServiceController(serviceInstaller1.ServiceName))
+            /*using (System.ServiceProcess.ServiceController serviceController = new System.ServiceProcess.ServiceController(serviceInstaller1.ServiceName))
             {
                 serviceController.Start();
 
-            }
+            }*/
         }
     }
 }

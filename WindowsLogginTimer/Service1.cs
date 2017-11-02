@@ -9,11 +9,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using System.Threading;
+using System.Configuration;
 
 namespace WindowsLogginTimer
 {
     public partial class Service1 : ServiceBase
     {
+        public string sDateTime;
+        public string sText;
         public Service1()
         {
             InitializeComponent();
@@ -21,7 +24,9 @@ namespace WindowsLogginTimer
 
         protected override void OnStart(string[] args)
         {
+            sDateTime = DateTime.Now.ToString("dd/MM/yyyy hh: mm: ss tt");
             ScheduleService();
+            WriteToFile(sText);
         }
 
         protected override void OnStop()
@@ -35,14 +40,39 @@ namespace WindowsLogginTimer
             // Postavljanje vremena 'po defaultu'
             DateTime scheduledTime = DateTime.MinValue;
 
-            int intervalMinutes = 1;
+            /* int intervalMinutes = 1;
 
-            // Postavljanje vremena zapisa u trenutno vrijeme + 1 minuta
-            scheduledTime = DateTime.Now.AddMinutes(intervalMinutes);
-            if (DateTime.Now > scheduledTime)
+             // Postavljanje vremena zapisa u trenutno vrijeme + 1 minuta
+             scheduledTime = DateTime.Now.AddMinutes(intervalMinutes);
+             if (DateTime.Now > scheduledTime)
+             {
+                 scheduledTime = scheduledTime.AddMinutes(intervalMinutes);
+             }*/
+            string mode = ConfigurationManager.AppSettings["Mode"].ToUpper();
+            if (mode == "DAILY")
             {
-                scheduledTime = scheduledTime.AddMinutes(intervalMinutes);
+                //Dohvati vrijeme iz konfiguracijske datoteke.
+                scheduledTime = DateTime.Parse(System.Configuration.ConfigurationManager.AppSettings["ScheduledTime"]);
+                if (DateTime.Now > scheduledTime)
+                {
+                    //Ukoliko je termin prošao, dodaj 1 dan.
+                    scheduledTime = scheduledTime.AddDays(1);
+                }
             }
+            if (mode.ToUpper() == "INTERVAL")
+            {
+                // Dohvati vrijeme iz konfiguracijske datoteke
+                int intervalMinutes = Convert.ToInt32(ConfigurationManager.AppSettings["IntervalMinutes"]);
+
+                //Postavi zakazano vrijeme za jednu minutu od trenutnog vremena.
+                scheduledTime = DateTime.Now.AddMinutes(intervalMinutes);
+                if (DateTime.Now > scheduledTime)
+                {
+                    //Ukoliko je termin prošao, dodaj 1 minutu.
+                    scheduledTime = scheduledTime.AddMinutes(intervalMinutes);
+                }
+            }
+
 
             // Vremenski interval
             TimeSpan timeSpan = scheduledTime.Subtract(DateTime.Now);
@@ -64,7 +94,7 @@ namespace WindowsLogginTimer
 
         private static void WriteToFile(string text)
         {
-            string path = "D:/";
+            string path = "D:/Barbara Strapac/ServiceLogTest.txt";
             using (StreamWriter writer = new StreamWriter(path, true))
             {
                 writer.WriteLine(string.Format(text, DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss tt")));
